@@ -1,15 +1,15 @@
 {
   "name": "@dephub/path",
   "type": "module",
-  "version": "1.0.2",
-  "description": "Path resolution utilities for Node.js with ESM support - cwd and dirname helpers",
+  "version": "2.0.0",
+  "description": "Path resolution utilities for Node.js with ESM support - cwd, dirname helpers, and built-in path utilities.",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
   "scripts": {
-    "prepublishOnly": "pnpm lint && pnpm check-types && pnpm build",
+    "prepublishOnly": "pnpm lint && pnpm check && pnpm build",
     "release": "pnpm publish",
     "docs": "lineo md 'src/**/*.ts' --outFile code.md --outDir temp",
-    "check-types": "tsc --noEmit --skipLibCheck",
+    "check": "tsc --noEmit --skipLibCheck",
     "lint": "eslint . --fix --max-warnings 0",
     "fmt": "prettier --write .",
     "clean": "rm -rf dist",
@@ -54,13 +54,13 @@
   },
   "packageManager": "pnpm@10.30.3",
   "devDependencies": {
-    "@dephub/eslint-ts": "^1.0.2",
+    "@dephub/eslint-ts": "^1.0.5",
     "@dephub/glob": "^1.0.2",
-    "@types/node": "^25.3.3",
-    "eslint": "^10.0.2",
-    "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1",
-    "vite-plugin-dts": "^4.5.4"
+    "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
+    "prettier": "^3.9.10",
+    "typescript": "6.0.3",
+    "vite": "^8.3.5",
+    "vite-plugin-dts": "^5.1.2"
   }
 }

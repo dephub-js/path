@@ -9,14 +9,14 @@ import { fileURLToPath } from 'node:url';
  * @throws {Error} When import.meta is not provided or invalid
  * @example
  * ```typescript
- * import { dirname } from '@dephub/path';
+ * import { useDirname } from '@dephub/path';
  *
  * // In file: /project/src/utils/helpers.ts
- * dirname(import.meta); // -> /project/src/utils
- * dirname(import.meta, 'data.json'); // -> /project/src/utils/data.json
+ * useDirname(import.meta); // -> /project/src/utils
+ * useDirname(import.meta, 'data.json'); // -> /project/src/utils/data.json
  * ```
  */
-export const dirname = (meta: ImportMeta, ...paths: string[]): string => {
+export function useDirname(meta: ImportMeta, ...paths: string[]): string {
   if (!meta?.url) {
     throw new Error('dirname() requires import.meta as first argument');
   }
@@ -24,4 +24,4 @@ export const dirname = (meta: ImportMeta, ...paths: string[]): string => {
   const filePath = fileURLToPath(meta.url);
 
   return path.resolve(path.dirname(filePath), ...paths);
-};
+}

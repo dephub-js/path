@@ -7,11 +7,12 @@ import process from 'node:process';
  * @returns Absolute path resolved from current working directory
  * @example
  * ```typescript
- * import { cwd } from '@dephub/path';
+ * import { useCwd } from '@dephub/path';
  *
- * cwd(); // -> /Users/user/project
- * cwd('src', 'index.ts'); // -> /Users/user/project/src/index.ts
+ * useCwd(); // -> /Users/user/project
+ * useCwd('src', 'index.ts'); // -> /Users/user/project/src/index.ts
  * ```
  */
-export const cwd = (...paths: string[]): string =>
-  path.resolve(process.cwd(), ...paths);
+export function useCwd(...paths: string[]): string {
+  return path.resolve(process.cwd(), ...paths);
+}

@@ -1,2 +1,4 @@
-export { cwd } from './core/cwd.js';
-export { dirname } from './core/dirname.js';
+export { useCwd } from './core/cwd.js';
+export { useDirname } from './core/dirname.js';
+import * as path from 'node:path';
+export { path };

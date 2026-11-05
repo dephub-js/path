@@ -2,16 +2,16 @@ import { glob } from '@dephub/glob';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
-import { cwd } from './src/core/cwd.js';
+import { useCwd } from './src/core/cwd.js';
 
-const entry = await glob(['src/**/*.ts'], {
+const entry = await glob(['src/**/*.ts', '!src/**/*.test.ts'], {
   absolute: true,
 });
 
 const dtsPlugin = dts({
   entryRoot: 'src',
-  exclude: ['vite.config.ts', 'src/cli.ts'],
-  outDir: 'dist',
+  exclude: ['vite.config.ts', 'src/cli.ts', 'src/**/*.test.ts'],
+  outDirs: 'dist',
   tsconfigPath: './tsconfig.json',
 });
 
@@ -21,7 +21,7 @@ export default defineConfig({
     lib: {
       entry,
     },
-    minify: 'esbuild',
+
     reportCompressedSize: true,
     rollupOptions: {
       external: ['*'],
@@ -42,7 +42,7 @@ export default defineConfig({
   plugins: [dtsPlugin],
   resolve: {
     alias: {
-      '@': cwd('src'),
+      '@': useCwd('src'),
     },
   },
 });

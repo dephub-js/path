@@ -1,6 +1,6 @@
 # @dephub/path 🗺️
 
-> Path resolution utilities for Node.js with ESM support - cwd and dirname helpers.
+> Path resolution utilities for Node.js with ESM support - cwd, dirname helpers, and built-in path utilities.
 
 [![NPM version](https://img.shields.io/npm/v/@dephub/path.svg?style=flat)](https://npmjs.org/package/@dephub/path)
 [![ESM-only](https://img.shields.io/badge/ESM-only-brightgreen?style=flat)](https://nodejs.org/)
@@ -9,22 +9,20 @@
 
 ## Features ✨
 
-- 📁 **Current Working Directory** - Resolve paths relative to current working directory
-- 📄 **Module Directory** - ESM-friendly replacement for `__dirname`
-- 🎯 **TypeScript Ready** - Full type safety with zero configuration
-- ⚡ **Lightweight** - Minimal utilities focused on path resolution
+- 📁 **Current Working Directory** – Resolve paths relative to current working directory
+- 📄 **Module Directory** – ESM-friendly replacement for `__dirname`
+- 🛠️ **Native Path Re-exported** – Direct access to all standard Node.js `path` utilities (`path.join`, `path.resolve`, etc.)
+- 🎯 **TypeScript Ready** – Full type safety with zero configuration
+- ⚡ **Lightweight** – Minimal utilities focused on path resolution
 
 ---
 
 ## Installation 📦
 
-```bash
-npm install @dephub/path
-# or
-pnpm add @dephub/path
-# or
-yarn add @dephub/path
-```
+- npm: `npm install @dephub/path`
+- pnpm: `pnpm add @dephub/path`
+- yarn: `yarn add @dephub/path`
+- bun: `bun add @dephub/path`
 
 ---
 
@@ -33,51 +31,63 @@ yarn add @dephub/path
 ### Resolve Paths from Current Directory
 
 ```typescript
-import { cwd } from '@dephub/path';
+import { useCwd } from '@dephub/path';
 
 // Get current working directory
-console.log(cwd()); // /Users/user/project
+console.log(useCwd()); // /Users/user/project
 
 // Resolve relative paths
-const configPath = cwd('config', 'app.json');
+const configPath = useCwd('config', 'app.json');
 // -> /Users/user/project/config/app.json
 ```
 
 ### Resolve Paths from Module Directory
 
 ```typescript
-import { dirname } from '@dephub/path';
+import { useDirname } from '@dephub/path';
 
 // In file: /project/src/utils/helpers.ts
-const utilsDir = dirname(import.meta);
+const utilsDir = useDirname(import.meta);
 // -> /project/src/utils
 
-const dataPath = dirname(import.meta, 'data.json');
+const dataPath = useDirname(import.meta, 'data.json');
 // -> /project/src/utils/data.json
+```
+
+### Using Native Path Utilities
+
+```typescript
+import { path } from '@dephub/path';
+
+const ext = path.extname('file.txt'); // -> .txt
+const joined = path.join('foo', 'bar'); // -> foo/bar
 ```
 
 ### Real-world Example
 
 ```typescript
-import { cwd, dirname } from '@dephub/path';
+import { useCwd, useDirname, path } from '@dephub/path';
 import { readFile } from '@dephub/read';
 import { writeFile } from '@dephub/write';
 
 // Read config from project root
-const config = await readFile(cwd('config.json'));
+const config = await readFile(useCwd('config.json'));
 
 // Write output relative to current module
 await writeFile(
-  dirname(import.meta, 'output', 'result.json'),
+  useDirname(import.meta, 'output', 'result.json'),
   JSON.stringify(result, null, 2),
 );
+
+// Normalize path using native path module
+const cleanPath = path.normalize('/foo/bar//baz/asdf/quux/..');
 ```
 
 ---
 
 ## API Reference 📚
 
-### `cwd(...paths)`
+### `useCwd(...paths)`
 
 Resolves paths relative to current working directory.
 
@@ -87,7 +97,7 @@ Resolves paths relative to current working directory.
 
 **Returns:** `string` - Absolute path
 
-### `dirname(meta, ...paths)`
+### `useDirname(meta, ...paths)`
 
 ESM replacement for `__dirname` - resolves paths relative to module.
 
@@ -99,6 +109,11 @@ ESM replacement for `__dirname` - resolves paths relative to module.
 **Returns:** `string` - Absolute path
 
 **Throws:** `Error` - If `import.meta` is not provided
+
+### `path`
+
+Re-export of the native Node.js `node:path` module (namespace object providing access to
+`join`, `resolve`, `extname`, `basename`, etc.).
 
 ---
 
